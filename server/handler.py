@@ -9,7 +9,7 @@ from packet import Packet, LogPriority # PacketPriority
 from flask_socketio import Namespace
 import socket
 
-import boto3
+
 from decimal import Decimal
 import json
 
@@ -17,16 +17,18 @@ import json
 config = json.loads(open("config.json").read())
 
 # CREATE TABLE
-dynamodb = boto3.resource('dynamodb')
-table = dynamodb.Table('CallistoData')
+if config["database"]["use_db"]:
+    import boto3
+    dynamodb = boto3.resource('dynamodb')
+    table = dynamodb.Table('CallistoData')
 
-time_of_test = Decimal(str(time.time()))
-table.put_item(
-    Item={
-        'TimeOftest': time_of_test,
-        'Data': {}
-    }
-)
+    time_of_test = Decimal(str(time.time()))
+    table.put_item(
+        Item={
+            'TimeOftest': time_of_test,
+            'Data': {}
+        }
+    )
 
 BYTE_SIZE = 8192
 
@@ -245,7 +247,7 @@ class Handler(Namespace):
                         data[sensor_type][location] = {}
                         for val_key in sensor:
                             data[sensor_type][location][val_key] = Decimal(str(sensor[val_key]))
-
+        
                 current_test_box = table.get_item(Key={'TimeOftest': time_of_test})['Item']['Data']
                 current_test_box[str(log['timestamp'])] = data
 
