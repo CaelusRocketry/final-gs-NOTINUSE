@@ -194,7 +194,7 @@ class Handler(Namespace):
                 pass
 
 
-    def ingest(self, packet_str):
+    def ingest(self, packet_str): # ingests packets from FS
         """ prints any packets received """
         print("Ingesting:", packet_str)
         packet = Packet.from_string(packet_str)
@@ -283,7 +283,7 @@ class Handler(Namespace):
     def update_buttons_copy(self, buttons):
         self.buttons_copy = buttons
 
-    def on_button_press(self, data):
+    def on_button_press(self, data): # processes messages that come from GS
         # print("Sending to frontend packet of type", data["header"], "-", data)
         if data['header'] == 'update_general':
             self.update_general_copy(data['message'])
@@ -297,7 +297,7 @@ class Handler(Namespace):
             self.update_store_data()
         else:
             print("\n\n\n\n\nwe just got a letter\n\nwe just got a letter\nwe just got a letter, wonder who its from?\n")
-            print(data)
+            print("this da da data: ", data)
             # TODO: THIS IS WHERE GS SENDS TO FS. MAP THE GS PACKET TO AN FS-ACCEPTABLE PACKET.
             data_header = data['header']
             data_message = data['message']
@@ -353,7 +353,7 @@ class Handler(Namespace):
                 mapped_message = valve_type_map[data_message["valve_type"]] + valve_location_map[data_message["valve_location"]]
 
             packet = Packet(header=header_map[data_header], message=mapped_message, timestamp=int((time.time()-self.INITIAL_TIME) * 1000))
-            print(packet.to_string())
+            print("this da da packet.to_string(): ", packet.to_string())
             self.enqueue(packet)
             # pack = Packet(header=data['header'], message=data['message'], timestamp=int((time.time()-self.INITIAL_TIME) * 1000))
             # self.enqueue(pack)
