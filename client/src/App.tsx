@@ -1,7 +1,5 @@
 import React from "react";
 
-import StatisticsView from "./views/StatisticsView";
-import ActionsView from "./views/ActionsView";
 import CountdownView from "./views/CountdownView";
 import ControlView from "./views/ControlView";
 
@@ -55,14 +53,6 @@ const App = () => {
             <option>{config.test_type.Ethanol}</option>
             <option>{config.test_type.Full}</option>
           </select>
-
-          <NavbarItem>
-            <Link to="/statistics">Statistics</Link>
-          </NavbarItem>
-
-          <NavbarItem>
-            <Link to="/actions">Actions</Link>
-          </NavbarItem>
           |
           <NavbarItem>
             <Link to="/stage">Stage</Link>
@@ -99,12 +89,6 @@ const App = () => {
         </div>
 
         <Switch>
-          <Route path="/actions" exact>
-            <ActionsView /> 
-          </Route>
-          <Route path="/statistics" exact>
-            <StatisticsView /> 
-          </Route>
           <Route path="/countdown" exact>
             <CountdownView />
           </Route>
